@@ -70,7 +70,8 @@ RTM_EXPORT(rt_tick_get);
 void rt_tick_set(rt_tick_t tick)
 {
     rt_base_t level;
-
+    /*rt_tick是全局变量,可能多个线程或者中断中调用,需要保证原子操作,故在设置之前先关闭中断,
+    之后恢复使能中断*/
     level = rt_hw_interrupt_disable();
     rt_tick = tick;
     rt_hw_interrupt_enable(level);
